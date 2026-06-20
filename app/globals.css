@@ -1609,7 +1609,7 @@ textarea {
 
   .mobile-menu-toggle {
     position: absolute;
-    top: 6px;
+    top: 50%;
     right: 7px;
     z-index: 2;
     display: grid !important;
@@ -1622,11 +1622,12 @@ textarea {
     border: 0;
     border-radius: 50%;
     background: #1d1918;
+    transform: translateY(-50%);
     transition: transform 220ms ease, background 220ms ease;
   }
 
   .mobile-menu-toggle:hover {
-    transform: translateY(-1px);
+    transform: translateY(-50%) scale(1.03);
   }
 
   .mobile-menu {
@@ -1813,12 +1814,6 @@ textarea {
   .mobile-menu {
     top: 80px;
     width: calc(100% - 10px);
-  }
-
-  .mobile-menu-toggle {
-    position: fixed;
-    top: 19px;
-    right: 12px;
   }
 
   .mobile-menu nav a {
