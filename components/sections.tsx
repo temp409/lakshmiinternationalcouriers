@@ -396,7 +396,7 @@ export function DeliverySection() {
 
 export function BenefitsSection() {
   return (
-    <section className="benefits-section">
+    <section className="benefits-section" id="benefits">
       <div className="wide-container benefits-panel reveal">
         <div className="benefit-copy">
           <span className="eyebrow">Customer benefits</span>

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { Menu, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 const navItems = [
@@ -13,6 +14,7 @@ const navItems = [
 
 export function SiteHeader() {
   const [scrolled, setScrolled] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 90);
@@ -21,10 +23,33 @@ export function SiteHeader() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  useEffect(() => {
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setMenuOpen(false);
+    };
+    const onResize = () => {
+      if (window.innerWidth > 1280) setMenuOpen(false);
+    };
+
+    window.addEventListener("keydown", onKeyDown);
+    window.addEventListener("resize", onResize);
+    return () => {
+      window.removeEventListener("keydown", onKeyDown);
+      window.removeEventListener("resize", onResize);
+    };
+  }, []);
+
+  const closeMenu = () => setMenuOpen(false);
+
   return (
-    <header className="site-header" data-scrolled={scrolled}>
+    <header className="site-header" data-menu-open={menuOpen} data-scrolled={scrolled}>
       <div className="nav-shell">
-        <Link className="brand-logo" href="#home" aria-label="Lakshmi International Couriers home">
+        <Link
+          className="brand-logo"
+          href="#home"
+          aria-label="Lakshmi International Couriers home"
+          onClick={closeMenu}
+        >
           <Image
             src="/assets/lakshmi-logo.png"
             alt="Lakshmi International Couriers"
@@ -44,6 +69,30 @@ export function SiteHeader() {
 
         <Link className="nav-cta" href="#contact">
           Contact US
+        </Link>
+
+        <button
+          className="mobile-menu-toggle"
+          type="button"
+          aria-label={menuOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-controls="mobile-navigation"
+          aria-expanded={menuOpen}
+          onClick={() => setMenuOpen((open) => !open)}
+        >
+          {menuOpen ? <X aria-hidden="true" size={22} /> : <Menu aria-hidden="true" size={22} />}
+        </button>
+      </div>
+
+      <div className="mobile-menu" id="mobile-navigation" aria-hidden={!menuOpen}>
+        <nav aria-label="Mobile navigation">
+          {navItems.map((item) => (
+            <Link href={item.href} key={item.label} onClick={closeMenu}>
+              {item.label}
+            </Link>
+          ))}
+        </nav>
+        <Link className="mobile-menu-cta" href="#contact" onClick={closeMenu}>
+          Contact Us
         </Link>
       </div>
     </header>
